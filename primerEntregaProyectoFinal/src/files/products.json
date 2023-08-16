@@ -1,0 +1,32 @@
+[
+  {
+    "title": "productoPrueba1",
+    "description": "esto es una prueba",
+    "price": "90",
+    "thumbnail": "sinimagen",
+    "code": "5",
+    "stock": "25",
+    "id": 0,
+    "status": "true"
+  },
+  {
+    "title": "modificando con put",
+    "description": "esto es una prueba",
+    "price": "90",
+    "thumbnail": "sinimagen",
+    "code": "4",
+    "stock": "25",
+    "id": 1,
+    "status": "true"
+  },
+  {
+    "title": "productoPrueba4",
+    "description": "esto es una prueba",
+    "price": "90",
+    "thumbnail": "sinimagen",
+    "code": "243",
+    "stock": "25",
+    "id": 3,
+    "status": "true"
+  }
+]
