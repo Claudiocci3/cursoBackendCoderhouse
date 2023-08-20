@@ -43,39 +43,66 @@ class CartManager {
         }
     }
 
-    async addProduct(cartId, product) {
+    async addProduct(cartId, product, units) {
       const cartIndex = this.products.findIndex(cart => cart.id === cartId);
-  
+      
       if (cartIndex !== -1) {
-          this.products[cartIndex].products.push(product);
-  
-          try {
-              await fs.writeFile(CARTS_PATH, JSON.stringify(this.products, null, 2));
-              console.log("Producto agregado al carrito:", product);
-          } catch (error) {
-              console.log("Error al agregar el producto:", error);
-          }
+        const cart = this.products[cartIndex];
+        const cartProductIndex = cart.products.findIndex(
+          cartProduct => cartProduct.id === product.id
+        );
+        
+        if (cartProductIndex !== -1) {
+          cart.products[cartProductIndex].quantity += units; 
+        } else {
+          cart.products.push({ ...product, quantity: units }); 
+        }
+        
+        try {
+          await fs.writeFile(CARTS_PATH, JSON.stringify(this.products, null, 2)); // Guardar los cambios en el archivo
+          console.log("Producto agregado al carrito:", product);
+        } catch (error) {
+          console.log("Error al agregar el producto:", error);
+        }
       } else {
-          console.log(`No se encontró un carrito con el ID ${cartId}`);
+        console.log(`No se encontró un carrito con el ID ${cartId}`);
       }
-  }
+    }
 
-  async deleteProduct (cartId, product) {
-    const cartIndex = this.products.findIndex(cart => cart.id === cartId);
-    
-    if (cartIndex !== -1) {
-      this.products[cartIndex].products.pop(product);
-
-      try {
-          await fs.writeFile(CARTS_PATH, JSON.stringify(this.products, null, 2));
-          console.log("Producto eliminado del carrito:", product);
-      } catch (error) {
-          console.log("Error al eliminar el producto:", error);
+    async deleteProduct(cartId, product, unitsToDelete) {
+      const cartIndex = this.products.findIndex(cart => cart.id === cartId);
+      
+      if (cartIndex !== -1) {
+        const cart = this.products[cartIndex];
+        const cartProductIndex = cart.products.findIndex(
+          cartProduct => cartProduct.id === product.id
+        );
+        
+        if (cartProductIndex !== -1) {
+          const cartProduct = cart.products[cartProductIndex];
+          
+          if (cartProduct.quantity > unitsToDelete) {
+            cartProduct.quantity -= unitsToDelete; // Reducir la cantidad
+          } else if (cartProduct.quantity === unitsToDelete) {
+            cart.products.splice(cartProductIndex, 1); // Eliminar el producto si la cantidad a eliminar es igual
+          } else {
+            console.log("No se puede eliminar más unidades de las que están en el carrito.");
+            return;
+          }
+          
+          try {
+            await fs.writeFile(CARTS_PATH, JSON.stringify(this.products, null, 2)); // Guardar los cambios en el archivo
+            console.log("Producto eliminado del carrito:", product);
+          } catch (error) {
+            console.log("Error al eliminar el producto:", error);
+          }
+        } else {
+          console.log(`No se encontró el producto en el carrito con el ID ${product.id}`);
+        }
+      } else {
+        console.log(`No se encontró un carrito con el ID ${cartId}`);
       }
-  } else {
-      console.log(`No se encontró un carrito con el ID ${cartId}`);
-  }
-  }
+    }
   
 }
 

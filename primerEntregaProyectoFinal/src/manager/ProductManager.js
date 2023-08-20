@@ -44,7 +44,7 @@ class ProductManager {
         code,
         stock,
         id: this.id,
-        status
+        status: true
       };
       this.products.push(newProduct);
       this.id++;
@@ -121,7 +121,7 @@ class ProductManager {
     const primerosNProductos = this.products.slice(0, n);
     return primerosNProductos;
   }
-  
+
 }
 
 module.exports = ProductManager;

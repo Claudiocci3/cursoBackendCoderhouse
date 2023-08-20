@@ -1,16 +1,6 @@
 [
   {
-    "title": "productoPrueba1",
-    "description": "esto es una prueba",
-    "price": "90",
-    "thumbnail": "sinimagen",
-    "code": "5",
-    "stock": "25",
-    "id": 0,
-    "status": "true"
-  },
-  {
-    "title": "modificando con put",
+    "title": "testeando de vuelta",
     "description": "esto es una prueba",
     "price": "90",
     "thumbnail": "sinimagen",
